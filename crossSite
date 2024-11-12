@@ -1,0 +1,6 @@
+#Used to capture a flag for cross site scripting
+
+
+<script>alert('Cross_Site_Scripting');</script>
+
+<script>alert('Hello');</script>
