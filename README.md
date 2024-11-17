@@ -1,7 +1,4 @@
-# webAppEx
 # Personal DB of challenge tools
-
-# WebAppExploitation
 
 # Overview
 WebAppExploitation is a comprehensive repository designed for learning and practicing techniques used in the exploitation of web applications. It contains resources, scripts, payloads, and tutorials to understand common and advanced web application vulnerabilities.
