@@ -14,3 +14,6 @@ intitle | intitle:admin | returns results that contain the specified word in the
 
 # DNS recon
 dnsrecon -t brt -d acmeitsupport.thm
+
+# Sublister
+./sublist3r.py -d acmeitsupport.thm
