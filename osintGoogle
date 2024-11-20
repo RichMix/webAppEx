@@ -17,3 +17,9 @@ dnsrecon -t brt -d acmeitsupport.thm
 
 # Sublister
 ./sublist3r.py -d acmeitsupport.thm
+
+# ffuf
+ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/namelist.txt -H "Host: FUZZ.acmeitsupport.thm" -u http://10.10.85.87
+
+# ffuf2 
+ffuf -w /usr/share/wordlists/SecLists/Discovery/DNS/namelist.txt -H "Host: FUZZ.acmeitsupport.thm" -u http://10.10.85.87 -fs {size}
