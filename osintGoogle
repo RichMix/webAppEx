@@ -11,3 +11,6 @@ filetype | filetype:pdf | returns results which are a particular file extension
 
 # intitle
 intitle | intitle:admin | returns results that contain the specified word in the title
+
+# DNS recon
+dnsrecon -t brt -d acmeitsupport.thm
