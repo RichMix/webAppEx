@@ -1,0 +1,8 @@
+nmap -sS -sV -A "target_ip"
+
+
+-sS (TCP SYN scan)
+
+-sV (Version detection)
+
+-A (Aggressive scan options)
