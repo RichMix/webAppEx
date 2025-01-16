@@ -6,3 +6,97 @@ nmap -sS -sV -A "target_ip"
 -sV (Version detection)
 
 -A (Aggressive scan options)
+
+Quick scan (default ports):
+
+nmap [target_ip]
+Comprehensive scan (all ports):
+
+
+nmap -p- [target_ip]
+Service version detection and OS detection:
+
+nmap -sC -sV -O -p- [target_ip]
+Aggressive scan with scripts:
+
+nmap -A -p- [target_ip]
+Scan for UDP ports:
+
+nmap -sU -p- [target_ip]
+Detect vulnerabilities (using NSE scripts):
+
+nmap --script vuln -p- [target_ip]
+Scan for specific port ranges:
+
+nmap -p 1-65535 [target_ip]
+
+# Breakdown of the Command Syntax
+
+nmap -sC -sV -O -sU -A -p 1-65525 [target_ip]
+-sC (Default scripts): 
+Runs Nmap's default set of scripts, which includes checks for common vulnerabilities and information gathering. This can add processing time for each scanned port.
+
+-sV (Version detection): 
+Attempts to determine the version of the services running on open ports. This requires interaction with services and may increase the scan time.
+
+-O (OS detection): 
+Uses various techniques to identify the operating system of the target. This can be slow, especially if the target isn't easily fingerprinted.
+
+-sU (UDP scan): 
+Scans all specified ports for open UDP services. UDP scanning is inherently slower than TCP scanning because it relies on timeout-based responses. Additionally, scanning a large range (1–65525) for UDP ports can take a very long time.
+
+-A (Aggressive scan): 
+Combines -sV, -O, and -sC while enabling traceroute. This makes the scan even more resource-intensive.
+
+-p 1-65525 (Port range): 
+Specifies a nearly full range of TCP and UDP ports to scan. Scanning such a large range increases the workload significantly.
+
+10.10.22.55: 
+The target IP address.
+
+## Troubleshooting 
+
+Why Did It Freeze the Terminal?
+UDP Scanning Over a Large Range:
+
+UDP scanning is notoriously slow because there is no guaranteed response for closed ports, leading to long timeouts. Scanning nearly 65,000 ports with UDP will take a very long time.
+Combination of Flags:
+
+## Combining -sC, -sV, -O, and -A results in overlapping functionality and significantly increases scan complexity. For instance:
+-A already includes -sC, -sV, and -O, so specifying them redundantly increases workload.
+
+Excessive Port Range:
+
+Scanning almost all ports (1–65525) for both TCP and UDP is computationally expensive and likely caused the terminal to appear unresponsive.
+Network Conditions:
+
+If the target has high latency, packet filtering, or rate-limiting, this could significantly slow down the scan.
+System Resource Limitation:
+
+Your machine may have run out of CPU, memory, or network bandwidth to handle such an intensive task.
+Recommendations
+
+Quick Solution to memory issues
+
+Split the Scan:
+
+Perform TCP and UDP scans separately to reduce complexity.
+nmap -sS -p 1-65525 [target_ip]  # TCP Scan
+nmap -sU -p 1-65525 [target_ip]  # UDP Scan
+Limit the Port Range:
+
+Focus on the most common ports or use Nmap's default port range.
+nmap -sC -sV -A -p 1-1000 [target_ip]
+Remove Redundancies:
+
+Since -A already includes -sC, -sV, and -O, you can simplify the command.
+nmap -A -p 1-1000 [target_ip]
+Optimize UDP Scans:
+
+Use the --top-ports option to focus on the most common UDP ports instead of all ports.
+nmap -sU --top-ports 100 [target_ip]
+Run the Scan in the Background:
+
+Use a tool like screen or tmux to avoid freezing your terminal, or save the output to a file for later review.
+nmap -A -p 1-65525 [target_ip] > scan_results.txt
+By optimizing the command and avoiding unnecessary complexity, you'll reduce the risk of freezing your terminal and improve scan efficiency.
