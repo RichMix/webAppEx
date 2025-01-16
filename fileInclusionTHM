@@ -1,5 +1,7 @@
 ## File Inclusion - THM Notes
 
+##NOTE: Use hand in hand with burp suite if possible
+
 Path Traversal
 
 Also known as Directory traversal, a web security vulnerability allows an attacker to read operating system resources, such as local files on the server running an application. The attacker exploits this vulnerability by manipulating and abusing the web application's URL to locate and access files or directories stored outside the application's root directory.
