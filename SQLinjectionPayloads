@@ -1,0 +1,12 @@
+[ 1"; SELECT * FROM USERS WHERE "%"=" ]
+- The 1"; terminates the SQL statement that the server is attempting to execute.
+- The SELECT * FROM USERS WHERE starts a second SQL statement which will grab all the fields from the users table.
+- The "%"=" matches the end of the SQL statement that is added after the query. 
+
+Refer to the fact that %"; was being added to the end of the input submitted by the search bar. The net result of the two parts combined is 
+[ "%"=" ] 
+[ %"; ]
+[ "%"=" ]  
+[ %"; ]
+​
+which will cause the WHERE to be true for every row in the table.
