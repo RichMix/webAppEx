@@ -1,0 +1,57 @@
+1. - 3. In the terminal window, type sudo su and press Enter to run the programs as a root user.
+
+4. In the [sudo] password for attacker field, type toor as a password and press Enter // Note: The password that you type will not be visible.
+
+5. Type cd and press Enter to jump to the root directory.
+
+6. Type cd social-engineer-toolkit and press Enter to navigate to the setoolkit folder.
+
+7. Type chmod +x ./setoolkit and press Enter to change the mode to execute the script
+
+8. Type ./setoolkit and press Enter to launch Social-Engineer Toolkit
+
+9. The SET menu appears, as shown in the screenshot below. Type 1 and press Enter to choose Social-Engineering Attacks
+
+10. A list of options for Social-Engineering Attacks appears. Type 2 and press Enter to choose Website Attack Vectors.
+
+11. A list of options in Website Attack Vectors appears. Type 3 and press Enter to choose Credential Harvester Attack Method.
+
+12. Type 2 and press Enter to choose Site Cloner from the menu.
+
+13. Type the IP address of the local machine (10.10.1.13) in the prompt for “IP address for the POST back in Harvester/Tabnabbing
+ and press Enter.
+ Note: In this case, we are targeting the Attacker Machine-2 machine (IP address: 10.10.1.13). These details may vary in your lab environment.
+
+14. You will be prompted for the URL to be cloned; type the desired URL in “Enter the url to clone” and press Enter. In this task, we will clone
+ the URL http://www.moviescope.com.
+ Note: You can clone any URL of your choice.
+
+15.  Having successfully cloned a website, you must now send the IP address of the Attacker Machine-2 machine to a victim and attempt to
+ trick them into clicking on
+
+16. Click the Firefox icon from the top-section of the Desktop to launch a web browser window and open your email account (in this example,
+ we are using Mozilla Firefox and Gmail, respectively). Log in, and compose an email.
+ Note: If a notification appears at the top section of a browser window, click Okay, Got it and in the Before you continue to Google Search
+ wizard, click I agree button.
+
+17 - 20.  After logging into your email account, click the Compose button in the left pane and compose a fake but enticing email to lure a user into
+ opening the email and clicking on a malicious link.
+ Note: A good way to conceal a malicious link in a message is to insert text that appears to be legitimate MovieScope URL (in this case), but
+ actually links to the malicious cloned MovieScope page.
+20. Position the cursor where the fake URL is to be placed, then click the Insert link icon.
+21. In the Edit Link window, first type the actual address of the cloned site in the Web address field under the Link to section. Then, type the
+ fake URL in the Text to display field. In this case, the actual address of the cloned MovieScope site is http://10.10.1.13, and the text that will
+ be displayed in the message is http://www.moviescope.com/party_pics. Click OK.
+
+22. The fake URL should appear in the message body, as shown in the screenshot below.
+
+23. Verify that the fake URL is linked to the correct cloned site: in Gmail, click the link; the actual URL will be displayed in a “Go to link” pop
+ -up. Once verified, send the email to the intended user. When the victim (you in this case) clicks the URL, a new tab opens up, and they will be presented with a replica of www.moviescope.com.
+
+24 -27. The victim will be prompted to enter their username and password into the form fields, which appear as on the genuine website. When
+ the victim enters the Username and Password and clicks Login, they will be redirected to the legitimate MovieScope login page. Note the
+ different URLs in the browser address bar for the cloned and real sites.
+
+28. As soon as the victim types in his/her Username and Password and clicks Login, SET extracts the typed credentials. These can now be
+ used by the attacker to gain unauthorized access to the victim’s account.
+30. Scroll down to find Username and Password displayed in the terminal.
