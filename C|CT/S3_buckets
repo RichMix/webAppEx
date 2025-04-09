@@ -1,0 +1,62 @@
+Exploit Open S3 Buckets using AWS CLI
+S3 buckets are used by customers and end users to store text documents, PDFs, videos, images, etc.
+
+Lab Scenario
+
+A security professional must have sound knowledge of enumerating S3 buckets. Using various techniques, misconfigurations in the bucket can be exploited to breach the security mechanism to compromise data privacy. Leaving the S3 bucket session running enables an attacker to modify files such as JavaScript or related code and inject malware into the bucket files. Furthermore, finding the bucket's location and name will help you in testing its security and identifying vulnerabilities in the implementation.
+
+Lab Objectives
+
+This lab demonstrates how to exploit S3 buckets using AWS CLI.
+
+Overview of S3 Buckets
+
+S3 buckets are used to store different types of data. The user needs to create a bucket with a unique name.
+
+Listed below are several techniques that can be adopted to identify AWS S3 Buckets:
+ • Inspecting HTML: Analyze the source code of HTML web pages in the background to find URLs to the target S3 buckets
+ • Brute-Forcing URL: Use Burp Suite to perform a brute-force attack on the target bucket’s URL to identify its correct URL
+ • Finding subdomains: Use tools such as Findsubdomains and Robtex to identify subdomains related to the target bucket
+ • Reverse IP Search: Use search engines such as Bing to perform reverse IP search to identify the domains of the target S3 buckets
+ • Advanced Google hacking: Use advanced Google search operators such as “inurl” to search for URLs related to the target S3 bucket
+
+3. In the [sudo] password for attacker field, type toor as a password and press Enter.
+ Note: The password that you type will not be visible.
+4. Type cd and press Enter to jump to the root directory.
+5. In the terminal window, type pip3 install awscli and press Enter to install AWS CLI. 
+6. Once the installation is completed, type aws --help and press Enter to check whether AWS CLI is properly installed.
+ Note: Ignore errors (if any).
+7. To configure AWS CLI in the terminal window, type aws configure and press Enter
+8. It will ask for the following details:
+ • AWS Access Key ID
+ • AWS Secret Access Key
+ • Default region name
+ • Default output format
+9. To provide these details, you need to login to your AWS account.
+10. Click Firefox icon from the top-section of the Desktop.
+11. Login to the AWS account that you created at the beginning of this task. Click the Firefox browser icon in the menu, type https://console.
+ aws.amazon.com in the address bar, and press Enter.
+ Note: If you do not have an AWS account, create one with the Basic Free Plan, and then proceed with the tasks.
+12. The Amazon Web Services Sign-In page appears. Type your email address in the Email address field and click Next.
+
+13. Type your AWS account password in the Password field and click Sign in. EXERCISE 10: EXPLOIT OPEN S3 BUCKETS USING AWS CLI
+Copyrights @ 2022 EC-Council International Ltd. Certified Cybersecurity Technician 154
+14. Click the AWS account drop-down menu and select My Security Credentials, as shown in the screenshot below. EXERCISE 10: EXPLOIT OPEN S3 BUCKETS USING AWS CLI
+Copyrights @ 2022 EC-Council International Ltd. Certified Cybersecurity Technician 155
+15. Click Access keys (access key ID and secret access key) in the Your Security Credentials section. EXERCISE 10: EXPLOIT OPEN S3 BUCKETS USING AWS CLI
+Copyrights @ 2022 EC-Council International Ltd. Certified Cybersecurity Technician 156
+16. Click the Create New Access Key button. EXERCISE 10: EXPLOIT OPEN S3 BUCKETS USING AWS CLI
+Copyrights @ 2022 EC-Council International Ltd. Certified Cybersecurity Technician 157
+17. A Create Access Key pop-up appears, stating that your access key has been successfully created. Click the Show Access Key link to view
+ the access key.
+18. Copy the Access Key ID displayed by pressing Ctrl+C and switch to the Terminal window. EXERCISE 10: EXPLOIT OPEN S3 BUCKETS USING AWS CLI
+Copyrights @ 2022 EC-Council International Ltd. Certified Cybersecurity Technician 158
+19. Right-click anywhere in the terminal window and select Paste from the context menu to paste the copied Access Key ID. Press Enter. This
+ will prompt you to the AWS Secret Access Key. Switch to your AWS account in the browser. EXERCISE 10: EXPLOIT OPEN S3 BUCKETS USING AWS CLI
+Copyrights @ 2022 EC-Council International Ltd. Certified Cybersecurity Technician 159
+20. In the Create Access Key pop-up, select the Secret Access Key displayed, copy it by pressing Ctrl+C, and minimize the browser window.
+ Switch to the Terminal window.
+21. Right-click anywhere in the terminal window, select Paste from the context menu to paste the copied Secret Access Key. Press Enter. This
+ will prompt you for the default region name.
+22. In the Default region name field, type eu-west-1 and press Enter.
+23. The Default output format prompt appears; leave it as default and press Enter.
