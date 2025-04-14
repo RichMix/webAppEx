@@ -1,4 +1,5 @@
-HyperText Transfer Protocol (HTTP)
+# HyperText Transfer Protocol (HTTP)
+
 Today, the majority of the applications we use constantly interact with the internet, both web and mobile applications. Most internet communications are made with web requests through the HTTP protocol. 
 HTTP is an application-level protocol used to access the World Wide Web resources. The term hypertext stands for text containing links to other resources and text that the readers can easily interpret.
 
@@ -21,7 +22,7 @@ Component	Example	Description
 Not all components are required to access a resource. 
 The main mandatory fields are the scheme and the host, without which the request would have no resource to request.
 
-HTTP Headers
+## HTTP Headers
 We have seen examples of HTTP requests and response headers in the previous section. Such HTTP headers pass information between the client and the server. Some headers are only used with either requests or responses, while some other general headers are common to both.
 
 Headers can have one or multiple values, appended after the header name and separated by a colon. We can divide headers into the following categories:
@@ -77,7 +78,7 @@ Referrer-Policy	Referrer-Policy: origin	Dictates whether the browser should incl
 Note: This section only mentions a small subset of commonly seen HTTP headers. There are many other contextual headers that can be used in HTTP communications. 
 ]It's also possible for applications to define custom headers based on their requirements. A complete list of standard HTTP headers can be found here.
  
-- THM -
+# - THM -
 
 - HTTP messages are packets of data exchanged between a user (the client) and the web server. These messages are very important for understanding how web applications work because they show how users' requests and the server's responses are communicated.
 
@@ -111,3 +112,152 @@ Why Understanding HTTP Messages Matters
 These messages are the foundation of how web applications communicate. If they’re structured properly, everything works smoothly.
 Knowing how they work will help you diagnose issues in web communication, which means better performance and reliability for your web application.
 It’s also crucial for security. Understanding HTTP messages helps you implement strong security measures to protect data during transmission. 
+
+An HTTP request is what a user sends to a web server to interact with a web application and make something happen. Since these requests are often the first point of contact between the user and the web server, knowing how they work is super important—especially if you’re into cyber security.
+
+Illustration showing a GET request and all of the different headers that are used.
+
+Imagine an HTTP request showing the key parts like the method (e.g., GET or POST), path (e.g., /login), and version (e.g., HTTP/1.1). These elements make up the basics of how a client (user) communicates with a server.
+
+Request Line
+The request line (or start line) is the first part of an HTTP request and tells the server what kind of request it’s dealing with. It has three main parts: the HTTP method, the URL path, and the HTTP version.
+
+Example: METHOD /path HTTP/version
+
+HTTP Methods
+The HTTP method tells the server what action the user wants to perform on the resource identified by the URL path. Here are some of the most common methods and their possible security issue:
+
+GET
+Used to fetch data from the server without making any changes. Reminder! Make sure you’re only exposing data the user is allowed to see. Avoid putting sensitive info like tokens or passwords in GET requests since they can show up as plaintext.
+
+POST
+Sends data to the server, usually to create or update something. Reminder! Always validate and clean the input to avoid attacks like SQL injection or XSS.
+
+PUT
+Replaces or updates something on the server. Reminder! Make sure the user is authorised to make changes before accepting the request.
+An HTTP request is what a user sends to a web server to interact with a web application and make something happen. Since these requests are often the first point of contact between the user and the web server, knowing how they work is super important—especially if you’re into cyber security.
+
+Illustration showing a GET request and all of the different headers that are used.
+
+Imagine an HTTP request showing the key parts like the method (e.g., GET or POST), path (e.g., /login), and version (e.g., HTTP/1.1). These elements make up the basics of how a client (user) communicates with a server.
+
+Request Line
+The request line (or start line) is the first part of an HTTP request and tells the server what kind of request it’s dealing with. It has three main parts: the HTTP method, the URL path, and the HTTP version.
+
+Example: METHOD /path HTTP/version
+
+HTTP Methods
+The HTTP method tells the server what action the user wants to perform on the resource identified by the URL path. Here are some of the most common methods and their possible security issue:
+
+GET
+Used to fetch data from the server without making any changes. Reminder! Make sure you’re only exposing data the user is allowed to see. Avoid putting sensitive info like tokens or passwords in GET requests since they can show up as plaintext.
+
+POST
+Sends data to the server, usually to create or update something. Reminder! Always validate and clean the input to avoid attacks like SQL injection or XSS.
+
+PUT
+Replaces or updates something on the server. Reminder! Make sure the user is authorised to make changes before accepting the request.
+
+DELETE
+Removes something from the server. Reminder! Just like with PUT, make sure only authorised users can delete resources.
+
+Besides these common methods, there are a few others used in specific cases:
+
+PATCH
+Updates part of a resource. It’s useful for making small changes without replacing the whole thing, but always validate the data to avoid inconsistencies.
+
+HEAD
+Works like GET but only retrieves headers, not the full content. It’s handy for checking metadata without downloading the full response.
+
+OPTIONS
+Tells you what methods are available for a specific resource, helping clients understand what they can do with the server.
+
+TRACE
+Similar to OPTIONS, it shows which methods are allowed, often for debugging. Many servers disable it for security reasons.
+
+CONNECT
+Used to create a secure connection, like for HTTPS. It’s not as common but is critical for encrypted communication.
+
+Each of these methods has its own set of security rules. For example, PATCH requests should be validated to avoid inconsistencies, and OPTIONS and TRACE should be turned off if not needed to avoid possible security risks.
+
+URL Path
+The URL path tells the server where to find the resource the user is asking for. For instance, in the URL https://tryhackme.com/api/users/123, the path /api/users/123 identifies a specific user.
+
+Attackers often try to manipulate the URL path to exploit vulnerabilities, so it’s crucial to:
+
+Validate the URL path to prevent unauthorised access
+Sanitise the path to avoid injection attacks
+Protect sensitive data by conducting privacy and risk assessments
+Following these practices helps protect your web application from common attacks.
+
+HTTP Version
+The HTTP version shows the protocol version used to communicate between the client and server. Here’s a quick rundown of the most common ones:
+
+HTTP/0.9 (1991)
+The first version, only supported GET requests.
+
+HTTP/1.0 (1996)
+Added headers and better support for different types of content, improving caching.
+
+HTTP/1.1 (1997)
+Brought persistent connections, chunked transfer encoding, and better caching. It’s still widely used today.
+
+HTTP/2 (2015)
+Introduced features like multiplexing, header compression, and prioritisation for faster performance.
+
+HTTP/3 (2022)
+Built on HTTP/2, but uses a new protocol (QUIC) for quicker and more secure connections.
+
+Although HTTP/2 and HTTP/3 offer better speed and security, many systems still use HTTP/1.1 because it’s well-supported and works with most existing setups. However, upgrading to HTTP/2 or HTTP/3 can provide significant performance and security improvements as more systems adopt them.
+DELETE
+Removes something from the server. Reminder! Just like with PUT, make sure only authorised users can delete resources.
+
+Besides these common methods, there are a few others used in specific cases:
+
+PATCH
+Updates part of a resource. It’s useful for making small changes without replacing the whole thing, but always validate the data to avoid inconsistencies.
+
+HEAD
+Works like GET but only retrieves headers, not the full content. It’s handy for checking metadata without downloading the full response.
+
+OPTIONS
+Tells you what methods are available for a specific resource, helping clients understand what they can do with the server.
+
+TRACE
+Similar to OPTIONS, it shows which methods are allowed, often for debugging. Many servers disable it for security reasons.
+
+CONNECT
+Used to create a secure connection, like for HTTPS. It’s not as common but is critical for encrypted communication.
+
+Each of these methods has its own set of security rules. For example, PATCH requests should be validated to avoid inconsistencies, and OPTIONS and TRACE should be turned off if not needed to avoid possible security risks.
+
+URL Path
+The URL path tells the server where to find the resource the user is asking for. For instance, in the URL https://tryhackme.com/api/users/123, the path /api/users/123 identifies a specific user.
+
+Attackers often try to manipulate the URL path to exploit vulnerabilities, so it’s crucial to:
+
+Validate the URL path to prevent unauthorised access
+Sanitise the path to avoid injection attacks
+Protect sensitive data by conducting privacy and risk assessments
+Following these practices helps protect your web application from common attacks.
+
+HTTP Version
+The HTTP version shows the protocol version used to communicate between the client and server. Here’s a quick rundown of the most common ones:
+
+HTTP/0.9 (1991)
+The first version, only supported GET requests.
+
+HTTP/1.0 (1996)
+Added headers and better support for different types of content, improving caching.
+
+HTTP/1.1 (1997)
+Brought persistent connections, chunked transfer encoding, and better caching. It’s still widely used today.
+
+HTTP/2 (2015)
+Introduced features like multiplexing, header compression, and prioritisation for faster performance.
+
+HTTP/3 (2022)
+Built on HTTP/2, but uses a new protocol (QUIC) for quicker and more secure connections.
+
+Although HTTP/2 and HTTP/3 offer better speed and security, many systems still use HTTP/1.1 because it’s well-supported and works with most existing setups. However, upgrading to HTTP/2 or HTTP/3 can provide significant performance and security improvements as more systems adopt them.
+
