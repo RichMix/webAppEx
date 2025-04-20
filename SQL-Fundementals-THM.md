@@ -1,4 +1,4 @@
-Databases 101
+# Databases 101
 Introducing Databases
 Okay, so you’ve been told just how important they are. Now, it's time to understand what they are in the first place. As mentioned in the introduction, databases are so ubiquitous that you very likely interact with systems that are using them. Databases are an organised collection of structured information or data that is easily accessible and can be manipulated or analysed. That data can take many forms, such as user authentication data (such as usernames and passwords), which are stored and checked against when authenticating into an application or site (like TryHackMe, for example), user-generated data on social media (Like Instagram and Facebook) where data such as user posts, comments, likes etc are collected and stored, as well as information such as watch history which is stored by streaming services such as Netflix and used to generate recommendations. 
 
@@ -743,4 +743,35 @@ Summary
 String Functions (CONCAT, GROUP_CONCAT, SUBSTRING, LENGTH): Manipulate and transform text.
 Aggregate Functions (COUNT, SUM, MAX, MIN): Perform calculations across multiple rows, providing insights into data.
 
+In the previous task, we studied how websites and applications interact with databases to store, modify, and retrieve their data in a structured manner. In this task, we will see how the interaction between an application and a database happens through SQL queries and how attackers can leverage these SQL queries to perform SQL injection attacks.
 
+Note: Before we proceed, please ensure that you try the manual or automated SQL injection methods only after the permission of the application owner.
+
+
+Database with an injection depicting the exploitation of SQL injection vulnerability.
+
+Let’s take an example of a login page that asks you to enter your username and password to log in. Let’s provide it with the following data:
+
+Username: John
+
+Password: Un@detectable444
+
+Once you enter your username and password, the website will receive it, make an SQL query with your credentials, and send it to the database. 
+
+SELECT * FROM users WHERE username = 'John' AND password = 'Un@detectable444';
+This query will be executed in the database. As per this query, the database will check for a user named John and the password of Un@detectable444. If it finds such a user, it will return the user’s details to the application. Note that the above query will be successful only if the given user and pass both have a match together in the database as they are separated by the boolean “AND”.
+
+Sometimes, when input is improperly sanitized, meaning that user input is not validated, attackers can manipulate the input and write SQL queries that would get executed in the database and perform the attacker’s desired actions. SQL injection has a very harmful effect in this digital world as all organizations store their data, including their critical information, inside the databases, and a successful SQL injection attack can compromise their critical data.
+
+Let’s assume the website login page we discussed above lacks input validation and sanitization. This means that it is vulnerable to SQL injection. The attacker does not know the password of the user John. They will type the following input in the given fields:
+
+Username: John
+
+Password: abc' OR 1=1;-- -
+
+This time, the attacker typed a random string abc and an injected string ' OR 1=1;-- -. The SQL query that the website would send to the database will now become the following:
+
+SELECT * FROM users WHERE username = 'John' AND password = 'abc' OR 1=1;-- -';
+This statement looks similar to the previous SQL query but now adds another condition with the operator OR. This query will see if there is a user, John. Then, it will check if John has the password abc (which he could not have because the attacker entered a random password). Ideally, the query should fail here because it expects both username and password to be correct, as there is an AND operator between them. But, this query has another condition, OR, between the password and a statement 1=1. Any one of them being true will make the whole SQL query successful. The password failed, so the query will check the next condition, which checks if 1=1. As we know, 1=1 is always true, so it will ignore the random password entered before this and consider this statement as true, which will successfully execute this query. The -- - at the end of the query would comment anything after 1=1, which means the query would be successfully executed, and the attacker would get logged in to John’s user account.
+
+One of the important things to note here is the use of a single quote ' after abc. Without this single quote,' the whole string 'abc OR 1=1;-- -' would be considered the password, which is not intended. However, if we add a single quote ' after abc, the password would look like 'abc' OR 1=1;---', which encloses the original string abc in the query and allows us to introduce a logical condition OR 1=1, which is always true.
