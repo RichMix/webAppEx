@@ -71,8 +71,7 @@ xmlrpc.php is a file representing a feature of WordPress that enables data to be
 WordPress Configuration File
 The wp-config.php file contains information required by WordPress to connect to the database, such as the database name, database host, username and password, authentication keys and salts, and the database table prefix. This configuration file can also be used to activate DEBUG mode, which can useful in troubleshooting.
 wp-config.php
-Code: php
-<?php
+
 /** <SNIP> */
 /** The name of the database for WordPress */
 define( 'DB_NAME', 'database_name_here' );
@@ -111,6 +110,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
+
 Key WordPress Directories
 The wp-content folder is the main directory where plugins and themes are stored. The subdirectory uploads/ is usually where any files uploaded to the platform are stored. These directories and files should be carefully enumerated as they may lead to contain sensitive data that could lead to remote code execution or exploitation of other vulnerabilities or misconfigurations.
 WP-Content
@@ -150,5 +150,7 @@ There are five types of users in a standard WordPress installation.
 
 ## Gaining access as an administrator is usually needed to obtain code execution on the server.
 ## However, editors and authors might have access to certain vulnerable plugins that normal users do not.
+
+
 
 
